@@ -1,8 +1,9 @@
 import { Router } from "express";
+
+import habRoutes from "./v1/habitantes.routes";
+
 const router = Router();
 
-router.get('/',(_,res)=>{
-  res.json({msg:"hello world"})
-})
+router.use("/hab", habRoutes);
 
 export default router;
