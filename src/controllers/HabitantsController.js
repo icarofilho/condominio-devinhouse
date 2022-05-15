@@ -1,3 +1,4 @@
+const sequelize = require('sequelize')
 import Habitante from "../models/Habitante";
 import { removeAccents } from "../utils/transformacoes";
 import { Op } from "sequelize";
@@ -66,7 +67,7 @@ module.exports = {
         }
 
         if (!habitantes) {
-          throw new Error("Nenhum habitante com o nome fornecido" );
+          throw new Error("Nenhum habitante com o nome fornecido");
         }
       }
       if (sobrenome) {
@@ -196,6 +197,21 @@ module.exports = {
       return res.status(200).json({ message: "Morador removido com sucesso" });
     } catch (error) {
       logger.error(`${error.message} - status: 400`);
+      return res.status(400).json({ error: error.message });
+    }
+  },
+  //! renda todos habitantes
+  async income(_, res) {
+    try {
+      const income = await Habitante.findOne({
+        attributes: [sequelize.fn("SUM", sequelize.col("renda"))],
+        raw:true
+      });
+      
+      logger.info('Listando o somatório das rendas')
+      return res.status(200).json({ income: Number(income.sum) });
+    } catch (error) {
+      logger.error(error.message, " status: 400");
       return res.status(400).json({ error: error.message });
     }
   },
