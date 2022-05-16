@@ -1,6 +1,5 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model } from "sequelize";
 // const { Model, DataTypes } = require("sequelize");
-
 
 class Habitante extends Model {
   static init(sequelize) {
@@ -21,11 +20,12 @@ class Habitante extends Model {
         renda: {
           type: DataTypes.DECIMAL(10, 2),
           allowNull: false,
+          defaultValue: 0,
         },
         cpf: {
           type: DataTypes.STRING,
           allowNull: false,
-          unique: true,
+          unique: { args: true, msg: "CPF já cadastrado" },
         },
       },
       {

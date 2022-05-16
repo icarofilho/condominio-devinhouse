@@ -1,0 +1,329 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Condominio Dev",
+    "description": "Backend para o condominio da empresa Dev, com o intuito de facilitar a visualização de gastos."
+  },
+  "host": "localhost:3333",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Habitantes-extra",
+      "description": "EndPoint dos CRUDs de Habitantes"
+    },
+    {
+      "name": "Habitantes-solicitado",
+      "description": "EndPoint dos CRUDs de Habitantes"
+    },
+    {
+      "name": "Condominio-extra",
+      "description": "EndPoint dos testes do gastos do condominio"
+    },
+    {
+      "name": "Relatorio-solicitado",
+      "description": "Exibe um relatorio com os gastos do condominio"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json",
+    "application/xml"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/hab/resident": {
+      "get": {
+        "tags": [
+          "Habitantes-solicitado"
+        ],
+        "description": "Retorna apenas o ID e o Nome de todos os moradores do condominio",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Habitantes-solicitado"
+        ],
+        "description": "Cadastra um novo morador no sistema",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "todos os campos devem ser preenchidos",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "type": "string",
+                  "example": "Katarina"
+                },
+                "sobrenome": {
+                  "type": "string",
+                  "example": "noxus"
+                },
+                "data_nascimento": {
+                  "type": "string",
+                  "example": "1985-02-02"
+                },
+                "cpf": {
+                  "type": "string",
+                  "example": "12345678901"
+                },
+                "renda": {
+                  "type": "string",
+                  "example": "9800"
+                }
+              },
+              "required": [
+                "nome",
+                "sobrenome",
+                "data_nascimento",
+                "cpf",
+                "renda"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/hab/income": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/hab/residentby/": {
+      "get": {
+        "tags": [
+          "Habitantes-solicitado"
+        ],
+        "description": "Retorna o ID e o nome dos habitantes baseado nos filtros informados - Nome ou sobrenome ou mês de nascimento",
+        "parameters": [
+          {
+            "name": "nome",
+            "in": "query",
+            "description": "Nome do habitante",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "sobrenome",
+            "in": "query",
+            "description": "Sobrenome do habitante",
+            "type": "string",
+            "required": false
+          },
+          {
+            "name": "mes",
+            "in": "query",
+            "description": "Mês de nascimento do habitante",
+            "type": "string|| number",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/hab/resident/{id}": {
+      "get": {
+        "tags": [
+          "Habitantes-solicitado"
+        ],
+        "description": "Retorna detalhes do morador baseado em seu ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do morador"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Habitantes-solicitado"
+        ],
+        "description": "Deleta um morador do sistema baseado em seu ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "ID do morador"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/hab/residentbyage/{age}": {
+      "get": {
+        "tags": [
+          "Habitantes-solicitado"
+        ],
+        "description": "Retorna o ID e o nome dos moradores com a idade igual ou superior a informada",
+        "parameters": [
+          {
+            "name": "age",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Idade do habitante"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/desp/index": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/desp/store": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mes": {
+                  "example": "any"
+                },
+                "ano": {
+                  "example": "any"
+                },
+                "agua": {
+                  "example": "any"
+                },
+                "luz": {
+                  "example": "any"
+                },
+                "reserva": {
+                  "example": "any"
+                },
+                "adm": {
+                  "example": "any"
+                },
+                "extra": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/desp/gasto_total": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/relatorio/": {
+      "get": {
+        "tags": [
+          "Relatorio-solicitado"
+        ],
+        "description": "Exibe um relatorio com os gastos do condominio",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    }
+  }
+}

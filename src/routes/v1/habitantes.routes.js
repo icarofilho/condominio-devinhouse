@@ -4,6 +4,7 @@ const habRoutes = Router();
 
 
 habRoutes.get("/resident", HabitantsController.index);
+habRoutes.get("/income", HabitantsController.income);
 habRoutes.get("/residentby/", HabitantsController.showFiltered);
 habRoutes.get("/resident/:id", HabitantsController.show);
 habRoutes.get("/residentbyage/:age", HabitantsController.showByAge);
