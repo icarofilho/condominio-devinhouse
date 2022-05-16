@@ -11,12 +11,14 @@ Para gerar o banco de dados, primeiramente deve-se renomear o arquivo <mark><b>.
 DATABASE_URL=postgres://<user>:<password>@localhost:<port>/<db_name>
 ```
 Com os dados alterados, basta executar o comando abaixo em seu terminal:
+
 ```bash
 yarn sequelize db:create
 ```
 
 <h4>Gerando tabelas</h4>
 Com o banco de dados gerado, podemos gerar as tabelas através das migrations com o comando:
+
 ```bash
 yarn sequelize db:migrate
 ```
@@ -24,6 +26,7 @@ yarn sequelize db:migrate
 
 <h4>Populando tabelas</h4>
 Uma vez com as tabelas criadas, podemos fazer um preenchimento das mesmas:
+
 ```bash
 yarn sequelize-cli db:seed:all
 ```
