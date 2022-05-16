@@ -1,4 +1,4 @@
-const sequelize = require('sequelize')
+const sequelize = require("sequelize");
 import Habitante from "../models/Habitante";
 import { removeAccents } from "../utils/transformacoes";
 import { Op } from "sequelize";
@@ -7,9 +7,11 @@ import { numberCheck } from "../utils/checagem";
 import { logger } from "../config/logger";
 
 module.exports = {
-  //! SOLICITADO PELO CLIENTE
-  //* Listar todos os habitantes
   async index(_, res) {
+    /* 
+    #swagger.tags=["Habitantes-solicitado"]
+    #swagger.description='Retorna apenas o ID e o Nome de todos os moradores do condominio'
+    */
     try {
       const allHabitants = await Habitante.findAll({
         attributes: ["id", "nome"],
@@ -22,6 +24,11 @@ module.exports = {
     }
   },
   async show(req, res) {
+    /* 
+    #swagger.tags=["Habitantes-solicitado"]
+    #swagger.description='Retorna detalhes do morador baseado em seu ID.'
+    #swagger.parameters['id']={"in":"path","name":"id","description":"ID do morador","required":true,"type":"integer"}
+    */
     try {
       const { id } = req.params;
       if (!id) {
@@ -50,9 +57,15 @@ module.exports = {
       return res.status(400).json({ error: error.message });
     }
   },
-  //! SOLICITADO PELO CLIENTE
-  //* Listar todos os habitantes por nome | mes
+
   async showFiltered(req, res) {
+    /* 
+    #swagger.tags=["Habitantes-solicitado"]
+    #swagger.description='Retorna o ID e o nome dos habitantes baseado nos filtros informados - Nome ou sobrenome ou mês de nascimento'
+    #swagger.parameters['nome']={"in": "query", "name": "nome", "description": "Nome do habitante", "type": "string", "required": false}
+    #swagger.parameters['sobrenome']={"in": "query", "name": "sobrenome", "description": "Sobrenome do habitante", "type": "string", "required": false}
+    #swagger.parameters['mes']={"in": "query", "name": "mes", "description": "Mês de nascimento do habitante", "type": "string|| number", "required": false}
+    */
     try {
       const { nome, sobrenome, mes } = req.query;
       if (nome) {
@@ -109,12 +122,17 @@ module.exports = {
       return res.status(400).json({ error: error.message });
     }
   },
-  //! SOLICITADO PELO CLIENTE
-  //* Listar todos os habitantes baseado na idade
+  
   async showByAge(req, res) {
+    /* 
+    #swagger.tags=["Habitantes-solicitado"]
+    #swagger.description='Retorna o ID e o nome dos moradores com a idade igual ou superior a informada'
+    #swagger.parameters['age']={type: 'integer', description: 'Idade do habitante', required: true}
+    
+    */
     try {
       const { age } = req.params;
-
+      console.log('idade => ',age)
       if (isNaN(age)) {
         throw new Error("Idade deve ser um número");
       }
@@ -134,9 +152,19 @@ module.exports = {
       return res.status(400).json({ error: error.message });
     }
   },
-  //! SOLICITADO PELO CLIENTE
-  //* Cadastrar habitante
+  
   async store(req, res) {
+    /* 
+    #swagger.tags=["Habitantes-solicitado"]
+    #swagger.description='Cadastra um novo morador no sistema'
+    #swagger.parameters['body']={"in": "body", "description": "todos os campos devem ser preenchidos",schema:{
+      $nome:"Katarina",
+      $sobrenome: "noxus",
+      $data_nascimento: "1985-02-02",
+      $cpf: "12345678901",
+      $renda:"9800"
+    }}
+    */
     const camposRequeridos = [];
     try {
       const { nome, sobrenome, data_nascimento, renda, cpf } = req.body;
@@ -177,6 +205,11 @@ module.exports = {
     }
   },
   async destroy(req, res) {
+    /* 
+    #swagger.tags=["Habitantes-solicitado"]
+    #swagger.description='Deleta um morador do sistema baseado em seu ID'
+    #swagger.parameters['id']={"in":"path","name":"id","description":"ID do morador","required":true,"type":"integer"}
+    */
     try {
       const { id } = req.params;
       if (!id) {
@@ -205,10 +238,10 @@ module.exports = {
     try {
       const income = await Habitante.findOne({
         attributes: [sequelize.fn("SUM", sequelize.col("renda"))],
-        raw:true
+        raw: true,
       });
-      
-      logger.info('Listando o somatório das rendas')
+
+      logger.info("Listando o somatório das rendas");
       return res.status(200).json({ income: Number(income.sum) });
     } catch (error) {
       logger.error(error.message, " status: 400");

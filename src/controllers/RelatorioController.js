@@ -6,6 +6,11 @@ import { mesesDoAno } from "../utils/constantes";
 
 module.exports = {
   async index(req, res) {
+    /* 
+    #swagger.tags=['Relatorio-solicitado']
+    #swagger.description='Exibe um relatorio com os gastos do condominio'
+    */
+    
     try {
       const despesas = await Despesa.findAll({
         order: [
@@ -22,27 +27,27 @@ module.exports = {
           mesesDoAno[despesas[despesas.length - 1].mes - 1]
         }/${despesas[despesas.length - 1].ano}`;
       }
-      //! maior
-      const habitantes = await Habitante.findAll()
+      
+      const habitantes = await Habitante.findAll();
       const nomeMaior = { nome: "", renda: 0 };
 
-      habitantes.forEach(habitante => {
-        if(!nomeMaior.nome){
-          nomeMaior.nome = habitante.nome
-          nomeMaior.renda = habitante.renda
-        } else if ( habitante.renda > nomeMaior.renda){
-          nomeMaior.nome = habitante.nome
-          nomeMaior.renda = habitante.renda
-        } 
-      })
+      habitantes.forEach((habitante) => {
+        if (!nomeMaior.nome) {
+          nomeMaior.nome = habitante.nome;
+          nomeMaior.renda = habitante.renda;
+        } else if (habitante.renda > nomeMaior.renda) {
+          nomeMaior.nome = habitante.nome;
+          nomeMaior.renda = habitante.renda;
+        }
+      });
+
       
-      //! Despesa
       const totalDespesas = await Despesa.sum("total");
       const totalReserva = await Despesa.sum("reserva");
       const totalExtra = await Despesa.sum("extra");
       const totalCaixa = await Despesa.sum("caixa");
 
-      //! Soma todos os habitantes
+      
       const totalRenda = await Habitante.sum("renda");
 
       const relatorio = {
@@ -57,6 +62,7 @@ module.exports = {
         maior_custo: `${nomeMaior.nome} -R$ ${nomeMaior.renda}`,
         demonstrativo: despesas,
       };
+      logger.info(`Relatorio gerado com sucesso`);
       return res.json({ relatorio });
     } catch (error) {
       logger.error(error.message);
