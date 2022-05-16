@@ -26,11 +26,17 @@ class Despesa extends Model {
           type: DataTypes.FLOAT,
           // defaultValue: 150,
         },
+        extra:{
+          type: DataTypes.FLOAT,
+        },
         adm: {
           type: DataTypes.FLOAT,
           // defaultValue: 250,
         },
         total: {
+          type: DataTypes.FLOAT,
+        },
+        caixa:{
           type: DataTypes.FLOAT,
         },
       },

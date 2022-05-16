@@ -33,7 +33,13 @@ module.exports = {
         type: Sequelize.FLOAT,
         // defaultValue: 250,
       },
+      extra:{
+        type: Sequelize.FLOAT,
+      },
       total:{
+        type: Sequelize.FLOAT,
+      },
+      caixa:{
         type: Sequelize.FLOAT,
       },
       created_at: {
